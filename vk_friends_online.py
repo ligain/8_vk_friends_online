@@ -4,19 +4,11 @@ from constants import APP_ID, API_VERSION
 
 
 def get_user_login():
-    login = input('Enter your VK login: ')
-    if not login:
-        print('Login could not be empty. Leaving...')
-        return
-    return login
+    return input('Enter your VK login: ')
 
 
 def get_user_password():
-    password = getpass.getpass(prompt='Enter VK password: ')
-    if not password:
-        print('Password could not be empty. Leaving...')
-        return
-    return password
+    return getpass.getpass(prompt='Enter VK password: ')
 
 
 def get_online_friends(app_id, login, password, api_version='3.0'):
@@ -46,8 +38,15 @@ def output_friends_to_console(friends_online):
 
 
 if __name__ == '__main__':
+
     login = get_user_login()
+    if not login:
+        exit('Login could not be empty. Leaving...')
+
     password = get_user_password()
+    if not password:
+        exit('Password could not be empty. Leaving...')
+
     friends_online = get_online_friends(
         APP_ID,
         login,
