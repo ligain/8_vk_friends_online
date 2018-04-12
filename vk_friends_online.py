@@ -6,14 +6,16 @@ from constants import APP_ID, API_VERSION
 def get_user_login():
     login = input('Enter your VK login: ')
     if not login:
-        exit('Login could not be empty. Leaving...')
+        print('Login could not be empty. Leaving...')
+        return
     return login
 
 
 def get_user_password():
     password = getpass.getpass(prompt='Enter VK password: ')
     if not password:
-        exit('Password could not be empty. Leaving...')
+        print('Password could not be empty. Leaving...')
+        return
     return password
 
 
@@ -22,12 +24,12 @@ def get_online_friends(app_id, login, password, api_version='3.0'):
         app_id=app_id,
         user_login=login,
         user_password=password,
+        scope='friends'
     )
     api = vk.API(session, version=api_version)
-    all_friends = api.friends.get(
-        fields=['first_name', 'last_name', ' online']
-    )
-    return list(filter(lambda friend: friend['online'], all_friends))
+    ids_of_online_friends = api.friends.getOnline()
+    online_friends = api.users.get(user_ids=ids_of_online_friends)
+    return online_friends
 
 
 def output_friends_to_console(friends_online):
